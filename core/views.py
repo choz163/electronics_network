@@ -9,6 +9,7 @@ class IsActiveStaff(IsAuthenticated):
     """
     Разрешение доступа: только активные (is_active) и штатные (is_staff) пользователи.
     """
+
     def has_permission(self, request, view):
         return super().has_permission(request, view) and request.user.is_staff
 
@@ -21,8 +22,13 @@ class NetworkNodeViewSet(viewsets.ModelViewSet):
     - list/retrieve/create/update/destroy
     - фильтрацию по полю country
     """
-    queryset = NetworkNode.objects.all().select_related('supplier').prefetch_related('products')
+
+    queryset = (
+        NetworkNode.objects.all()
+        .select_related("supplier")
+        .prefetch_related("products")
+    )
     serializer_class = NetworkNodeSerializer
     permission_classes = (IsActiveStaff,)
     filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('country',)
+    filterset_fields = ("country",)

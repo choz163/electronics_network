@@ -17,6 +17,7 @@ class NetworkNode(models.Model):
         debt_to_supplier (DecimalField): Задолженность перед поставщиком.
         created_at (DateTimeField): Время создания записи.
     """
+
     name = models.CharField(max_length=255)
     email = models.EmailField()
     country = models.CharField(max_length=100)
@@ -24,24 +25,24 @@ class NetworkNode(models.Model):
     street = models.CharField(max_length=255)
     house_number = models.CharField(max_length=20)
     supplier = models.ForeignKey(
-        'self',
+        "self",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='clients',
-        help_text='Поставщик данного узла (или None для корневого).'
+        related_name="clients",
+        help_text="Поставщик данного узла (или None для корневого).",
     )
     debt_to_supplier = models.DecimalField(
         max_digits=12,
         decimal_places=2,
-        default=Decimal('0.00'),
-        help_text='Задолженность перед поставщиком.'
+        default=Decimal("0.00"),
+        help_text="Задолженность перед поставщиком.",
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'Узел сети'
-        verbose_name_plural = 'Узлы сети'
+        verbose_name = "Узел сети"
+        verbose_name_plural = "Узлы сети"
 
     def __str__(self):
         """
@@ -70,19 +71,20 @@ class Product(models.Model):
         model (CharField): Модель или артикул.
         release_date (DateField): Дата релиза.
     """
+
     node = models.ForeignKey(
         NetworkNode,
         on_delete=models.CASCADE,
-        related_name='products',
-        help_text='Узел, к которому относится этот продукт.'
+        related_name="products",
+        help_text="Узел, к которому относится этот продукт.",
     )
     title = models.CharField(max_length=255)
     model = models.CharField(max_length=255)
     release_date = models.DateField()
 
     class Meta:
-        verbose_name = 'Продукт'
-        verbose_name_plural = 'Продукты'
+        verbose_name = "Продукт"
+        verbose_name_plural = "Продукты"
 
     def __str__(self):
         """
